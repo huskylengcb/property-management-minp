@@ -9,9 +9,12 @@ export const loginApi = (code: string) => {
         'content-type': 'application/json' // 默认值
       },
       success (res) {
-        console.log(999999, res)
+        console.log(666)
         wx.setStorageSync("currentUser", res.data.data.currentUser)
         wx.setStorageSync("sessionId", res.header["Set-Cookie"])
+        if (res.data.data.currentUser.nickname) {
+          wx.navigateTo({url: '/pages/login/index'})
+        }
       },
       fail (res) {
         console.log('登录失败！' + res.errMsg)

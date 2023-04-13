@@ -1,7 +1,6 @@
 <view class="container login-page">
   <view class="userinfo">
-    <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称3 </button>
-    <button wx:elif="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称2 </button>
-    <view wx:else> 请使用1.4.4及以上版本基础库 </view>
+    <view>授权过期</view>
+    <button bindtap="getUserProfile"> 重新登录授权 </button>
   </view>
 </view>

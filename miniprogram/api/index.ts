@@ -6,11 +6,11 @@ interface Header {
 
 interface Params {
   url: string;
-  data: any;
-  method: 'PUT' | 'POST';
-  header: Header;
-  success: (res: any) => void;
-  fail:(res: any) => void;
+  data?: any;
+  method: 'PUT' | 'POST' | 'GET';
+  header?: Header;
+  success?: (res: any) => void;
+  fail?: (res: any) => void;
 }
 
 export const wxRequest = (params: Params) => {
@@ -19,36 +19,23 @@ export const wxRequest = (params: Params) => {
     'content-type': 'application/json' // 默认值
   };
   wx.request({
-    url: params.url,
-    data: params.data,
+    url: `${domain}${params.url}`,
+    data: params.data || {},
     method: params.method,
     header: header,
     success (res) {
       if (res.data.status == 401) {
-        console.log(8888)
         wx.navigateTo({
           url: '/pages/login/index',
-          // events: {
-          //   // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
-          //   acceptDataFromOpenedPage: function(data) {
-          //     console.log(data)
-          //   },
-          //   someEvent: function(data) {
-          //     console.log(data)
-          //   }
-          // },
-          // success: function(res) {
-          //   // 通过eventChannel向被打开页面传送数据
-          //   res.eventChannel.emit('acceptDataFromOpenerPage', { data: 'test' })
-          // }
         })
         return;
       }
-      console.log(res)
-      params.success(res);
+      params.success && params.success(res);
+      return res;
     },
-    fail: () => {
-      params.fail
+    fail: (res) => {
+      params.fail && params.fail(res);
+      return res;
     }
   })
 }
